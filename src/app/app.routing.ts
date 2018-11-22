@@ -4,13 +4,19 @@ import { HomeComponent } from './home/index';
 import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
 import { AuthGuard } from './_guards/index';
-import {CreatecustomerComponent} from "./createcustomer/createcustomer.component";
+import {CreatecustomerComponent} from './createcustomer/index';
+import {UpdatecustomerComponent} from './updatecustomer/index';
+import {DeletecustomerComponent} from './deletecustomer/index';
+
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    {path:'createcustomer', component:CreatecustomerComponent,canActivate: [AuthGuard]},
+    {path:'createcustomer',component:CreatecustomerComponent, canActivate: [AuthGuard]},
+    {path:'updatecustomer',component:UpdatecustomerComponent, canActivate: [AuthGuard]},
+    {path: 'deletecustomer',component:DeletecustomerComponent, canActivate: [AuthGuard]},
+
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

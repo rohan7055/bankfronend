@@ -8,7 +8,6 @@ export class AuthenticationService {
 
      httpOptions:any = {
             headers: new HttpHeaders({
-
               'Content-Type': 'application/x-www-form-urlencoded'
 
             })
@@ -30,7 +29,11 @@ export class AuthenticationService {
                 }
 
                 return user;
-            });
+            },
+            error=>{
+                console.error(error)
+            }
+            );
     }
 
     logout() {
