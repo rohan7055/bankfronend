@@ -42,5 +42,10 @@ export class CustomerserviceService {
   //3.Update Customer
   //4.Search Customer
   //5.View All Customers
+  //6.Reactivate the customer
+  reActivateCustomer(ssn:number){
+    return this.http.post<any>("http://localhost:5000/RetailBanking_GroupB/customer/reactivatecustomer",{ssn:ssn},this.httpOptions)
+
+  }
 
 }

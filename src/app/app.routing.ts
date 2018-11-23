@@ -7,6 +7,7 @@ import { AuthGuard } from './_guards/index';
 import {CreatecustomerComponent} from './createcustomer/index';
 import {UpdatecustomerComponent} from './updatecustomer/index';
 import {DeletecustomerComponent} from './deletecustomer/index';
+import {ViewcustomerComponent} from './viewcustomer/viewcustomer.component';
 
 
 const appRoutes: Routes = [
@@ -16,6 +17,8 @@ const appRoutes: Routes = [
     {path:'createcustomer',component:CreatecustomerComponent, canActivate: [AuthGuard]},
     {path:'updatecustomer',component:UpdatecustomerComponent, canActivate: [AuthGuard]},
     {path: 'deletecustomer',component:DeletecustomerComponent, canActivate: [AuthGuard]},
+    {path: 'viewcustomer',component:ViewcustomerComponent, canActivate: [AuthGuard]},
+
 
 
     // otherwise redirect to home
