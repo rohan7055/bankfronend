@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FormGroup , FormBuilder,FormControl} from '@angular/forms';
+import {FormGroup , FormBuilder,FormControl, Validators} from '@angular/forms';
 import {Router, NavigationExtras} from "@angular/router";
+
 import {Customer} from '../_models/index';
-import{CustomerserviceService,AlertService,DataService} from '../_services/index';
-import {DisableControlDirective} from '../_directives/disablecontrol.directive';
+import{CustomerserviceService,AlertService,DataService,StateCitydataService} from '../_services/index';
 import { ConfirmComponent } from '../_directives/index';
 import { DialogService } from "ng2-bootstrap-modal";
 
@@ -22,24 +22,49 @@ export class CreatecustomerComponent implements OnInit {
     loadingName = false;
     loading=false;
     disable=false;
+    states:string[]=[];
+    citystatedata={};
+    cities:string[]=[];
 
 
 
     constructor(private formBuilder : FormBuilder,
             private customerService : CustomerserviceService,
-            private alertService:AlertService,
-            private dialogService:DialogService ,
-            private dataService:DataService,
-             private router: Router) {
+          private alertService:AlertService,
+          private dialogService:DialogService ,
+          private dataService:DataService,
+           private router: Router,
+          private stateCityData : StateCitydataService) {
+
 
         this.buildForm();
+
     }
 
     ngOnInit() {
-    this.createCustomerForm.get('ssn').valueChanges.subscribe(value => {
-      // do something with value here
-      console.log(value);
+
+        this.stateCityData.getJSON()
+        .subscribe(data=>{
+            console.log(data)
+            this.citystatedata=data;
+            for (let key in data) {
+            this.states.push(key)
+           console.log(key);
+          }
+        },error=>{
+            console.log(error)
+        });
+
+    this.createCustomerForm.get('cust_state').valueChanges.subscribe(selectedstate => {
+           for (let key in  this.citystatedata) {
+               if(key==selectedstate){
+               this.cities=this.citystatedata[key]
+               }
+
+              console.log(key);
+             }
     });
+
 
   }
 
@@ -53,12 +78,12 @@ export class CreatecustomerComponent implements OnInit {
     buildForm()
     {
         this.createCustomerForm = this.formBuilder.group({
-            ssn : this.formBuilder.control(null),
-            cust_name : this.formBuilder.control(null),
-            cust_age : this.formBuilder.control(null),
-            cust_addr : this.formBuilder.control(null),
-            cust_state : this.formBuilder.control(null),
-            cust_city : this.formBuilder.control(null)
+            ssn : this.formBuilder.control('',Validators.required),
+            cust_name :this.formBuilder.control('',Validators.required),
+            cust_age : this.formBuilder.control('',Validators.required),
+            cust_addr : this.formBuilder.control('',Validators.required),
+            cust_state :this.formBuilder.control('',Validators.required),
+            cust_city : this.formBuilder.control('',Validators.required)
 
         });
     }
@@ -91,33 +116,33 @@ export class CreatecustomerComponent implements OnInit {
     }
 
     onBlurMethod(){
-      this.disableForm(true);
-      this.loadingName=true;
-      this.disable=true;
-      console.log(this.createCustomerForm.value['ssn'])
-      this.customerService.checkCustomer(this.createCustomerForm.value['ssn'])
-      .subscribe(data=>{
-        this.loadingName=false;
-        console.log(data)
-        if(data['status']){
-          this.disableForm(false);
-          this.disable=false;
-          this.alertService.success(data['message']);
+        this.disableForm(true);
+        this.loadingName=true;
+        this.disable=true;
+        console.log(this.createCustomerForm.value['ssn'])
+        this.customerService.checkCustomer(this.createCustomerForm.value['ssn'])
+        .subscribe(data=>{
+          this.loadingName=false;
+          console.log(data)
+          if(data['status']){
+            this.disableForm(false);
+            this.disable=false;
+            this.alertService.success(data['message']);
 
-        }else{
-            if(data['statusCode']==3){
-              this.showConfirm(data['message'],data['data']['ssn'])
-            }else{
-              this.alertService.error(data['message']);
+          }else{
+              if(data['statusCode']==3){
+                this.showConfirm(data['message'],data['data']['ssn'])
+              }else{
+                this.alertService.error(data['message']);
 
-            }
-        }
+              }
+          }
 
-      },error=>{
-       this.alertService.error("Some Error Occured");
-      })
+        },error=>{
+         this.alertService.error("Some Error Occured");
+        })
 
-    }
+      }
 
     disableForm(disable:boolean){
 
@@ -133,30 +158,53 @@ export class CreatecustomerComponent implements OnInit {
     }
 
 
+
     showConfirm(message:string,ssn:number) {
-            console.log(ssn)
+        console.log(ssn)
+        let disposable = this.dialogService.addDialog(ConfirmComponent, {
+            title:'Create Customer',
+            message:message})
+            .subscribe((isConfirmed)=>{
+                //We get dialog result
+                if(isConfirmed) {
+                  this.customerService.reActivateCustomer(ssn)
+                  .subscribe(data=>{
+                    console.log("Reactivation")
+                    console.log(data)
+                       if(!data['status']){
+                           this.showPrompt(data['message'])
+                       }else{
+                         this.alertService.success(data['message'])
+                         this.dataService.storage=data['data'];
+                         this.router.navigate(["viewcustomer"]);
+
+
+                       }
+                  },error=>{
+                    this.alertService.error(error['message'])
+                  });
+                }
+                else {
+                    alert('declined');
+                }
+            });
+        //We can close dialog calling disposable.unsubscribe();
+        //If dialog was not closed manually close it by timeout
+      /*  setTimeout(()=>{
+            disposable.unsubscribe();
+        },10000);*/
+    }
+
+
+    showPrompt(message:string) {
             let disposable = this.dialogService.addDialog(ConfirmComponent, {
-                title:'Create Customer',
+                title:'Reactivate Customer',
                 message:message})
                 .subscribe((isConfirmed)=>{
                     //We get dialog result
                     if(isConfirmed) {
-                      this.customerService.reActivateCustomer(ssn)
-                      .subscribe(data=>{
-                        console.log("Reactivation")
-                        console.log(data)
-                           if(!data['status']){
-                               this.showPrompt(data['message'])
-                           }else{
-                             this.alertService.success(data['message'])
-                             this.dataService.storage=data['data'];
-                             this.router.navigate(["viewcustomer"]);
+                      alert('success');
 
-
-                           }
-                      },error=>{
-                        this.alertService.error(error['message'])
-                      });
                     }
                     else {
                         alert('declined');
@@ -164,32 +212,11 @@ export class CreatecustomerComponent implements OnInit {
                 });
             //We can close dialog calling disposable.unsubscribe();
             //If dialog was not closed manually close it by timeout
-          /*  setTimeout(()=>{
+            setTimeout(()=>{
                 disposable.unsubscribe();
-            },10000);*/
+            },10000);
         }
 
-
-        showPrompt(message:string) {
-                let disposable = this.dialogService.addDialog(ConfirmComponent, {
-                    title:'Reactivate Customer',
-                    message:message})
-                    .subscribe((isConfirmed)=>{
-                        //We get dialog result
-                        if(isConfirmed) {
-                          alert('success');
-
-                        }
-                        else {
-                            alert('declined');
-                        }
-                    });
-                //We can close dialog calling disposable.unsubscribe();
-                //If dialog was not closed manually close it by timeout
-                setTimeout(()=>{
-                    disposable.unsubscribe();
-                },10000);
-            }
 
 
 

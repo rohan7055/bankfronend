@@ -20,24 +20,26 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" [routerLink]="['/deletecustomer']">Delete Customer</a>
            <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">View Customers</a>
+          <a class="dropdown-item" [routerLink]="['/viewallcustomers']">View Customers</a>
+
         </div>
       </li>
-      
+
         <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" style="color:white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Account Management
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Create Account</a>
+          <a class="dropdown-item" [routerLink]="['/createaccount']">Create Account</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">View Accounts</a>
+          <a class="dropdown-item" [routerLink]="['/viewallaccounts']">View Accounts</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Delete Account</a>
+          <a class="dropdown-item" [routerLink]="['/deleteaccount']">Delete Account</a>
         </div>
+
       </li>
-      
-      
+
+
         <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" style="color:white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           View Status Details

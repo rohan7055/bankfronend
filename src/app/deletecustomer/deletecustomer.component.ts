@@ -46,7 +46,7 @@ export class DeletecustomerComponent implements OnInit {
         this.customerservice.delete(custid)
         .subscribe(data=>{
           this.loading=false;
-
+            console.log(data)
             if(data['status']){
              this.alertService.success(data["message"])
             }else{

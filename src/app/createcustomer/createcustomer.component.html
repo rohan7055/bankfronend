@@ -1,49 +1,40 @@
 <div class="container col-md-6 col-md-offset-3">
     <h2>Create Customer</h2>
     <form name="form"  novalidate [formGroup]="createCustomerForm" (ngSubmit)="onSubmit()" >
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'alert alert-danger': createCustomerForm.get('ssn').errors && (createCustomerForm.get('ssn').touched || createCustomerForm.get('ssn').dirty)}">
             <label for="SSN">Customer SSN ID</label>
             <input type="text" class="form-control" formControlName="ssn" (blur)="onBlurMethod()" required />
               <img *ngIf="loadingName" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                <div  class="help-block">First Name is required</div>
+
 
         </div>
-        <div class="form-group">
+        <div class="form-group"  [ngClass]="{'has-error': createCustomerForm.get('cust_name').errors && (createCustomerForm.get('cust_name').touched || createCustomerForm.get('cust_name').dirty)}">
             <label for="customerName">Customer Name</label>
             <input type="text" class="form-control" formControlName="cust_name" [disabled]="disable" required />
-            <div class="help-block">Last Name is required</div>
         </div>
         <div class="form-group">
             <label for="username">Age</label>
             <input type="text" class="form-control" formControlName="cust_age" [disabled]="disable" required />
-            <div  class="help-block">Username is required</div>
         </div>
         <div class="form-group">
             <label for="password">Address</label>
             <input type="text" class="form-control" formControlName="cust_addr" [disabled]="disable" required />
-            <div  class="help-block">Password is required</div>
         </div>
 
          <div class="form-group">
                <label for="exampleFormControlSelect1">State</label>
-               <select class="form-control" id="exampleFormControlSelect1" formControlName="cust_state" [disabled]="disable">
-                         <option>Uttrakhand</option>
-                         <option>Rajasthan</option>
-                         <option>MadhyaPradesh</option>
-                          <option>Kerala</option>
-                          <option>Punjab</option>
-                        </select>
-             </div>
+               <select class="form-control" formControlName="cust_state" [disabled]="disable">
+                               <option [value]=null selected=true>---Select State---</option>
+                 <option *ngFor="let state of states" [value]="state">{{state}}</option>
+                </select>
+         </div>
 
          <div class="form-group">
                <label for="exampleFormControlSelect1" >City</label>
-               <select class="form-control" id="exampleFormControlSelect1" formControlName="cust_city" [disabled]="disable">
-                         <option>Uttrakhand</option>
-                         <option>Rajasthan</option>
-                         <option>MadhyaPradesh</option>
-                          <option>Kerala</option>
-                          <option>Punjab</option>
-                        </select>
+               <select class="form-control" formControlName="cust_city" [disabled]="disable">
+                <option [value]=null selected>---Select City---</option>
+                <option *ngFor="let city of cities" [value]="city">{{city}}</option>
+               </select>
              </div>
         <div class="form-group">
             <button  class="btn btn-primary" [disabled]="disable" >Submit</button>

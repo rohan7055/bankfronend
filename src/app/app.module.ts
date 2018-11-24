@@ -1,4 +1,4 @@
-﻿import { NgModule }      from '@angular/core';
+﻿﻿import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule , ReactiveFormsModule}    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -12,12 +12,10 @@ import { fakeBackendProvider } from './_helpers/index';
 import { AppComponent }  from './app.component';
 import { routing }        from './app.routing';
 
-import { AlertComponent ,DisableControlDirective,ConfirmComponent} from './_directives/index';
-import { SharedModule } from './shared/shared.module';
-
+import { AlertComponent ,ConfirmComponent} from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor } from './_helpers/index';
-import { AlertService, AuthenticationService, UserService ,CustomerserviceService,DataService} from './_services/index';
+import { AlertService, AuthenticationService, UserService ,CustomerserviceService, AccountService,DataService,StateCitydataService} from './_services/index';
 import { HomeComponent } from './home/index';
 import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
@@ -26,7 +24,15 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { UpdatecustomerComponent } from './updatecustomer/updatecustomer.component';
 import { DeletecustomerComponent } from './deletecustomer/deletecustomer.component';
+import { DeleteaccountComponent } from './deleteaccount/deleteaccount.component';
+import { CreateaccountComponent } from './createaccount/createaccount.component';
 import {ViewcustomerComponent} from './viewcustomer/viewcustomer.component';
+import {ViewaccountComponent} from './viewaccount/viewaccount.component';
+import {ViewallcustomersComponent}from './viewallcustomers/viewallcustomers.component';
+import{ViewallaccountsComponent} from './viewallaccounts/index';
+import {NG2DataTableModule} from "angular2-datatable-pagination";
+
+
 
 @NgModule({
     imports: [
@@ -35,9 +41,9 @@ import {ViewcustomerComponent} from './viewcustomer/viewcustomer.component';
         HttpClientModule,
         routing,
         ReactiveFormsModule,
-        BootstrapModalModule
+        BootstrapModalModule,
+        NG2DataTableModule
     ],
-
     declarations: [
         AppComponent,
         AlertComponent,
@@ -49,9 +55,13 @@ import {ViewcustomerComponent} from './viewcustomer/viewcustomer.component';
         FooterComponent,
         UpdatecustomerComponent,
         DeletecustomerComponent,
+        DeleteaccountComponent,
+        CreateaccountComponent,
         ConfirmComponent,
-        ViewcustomerComponent
-
+        ViewcustomerComponent,
+        ViewaccountComponent,
+        ViewallcustomersComponent,
+        ViewallaccountsComponent
     ],
     providers: [
         AuthGuard,
@@ -64,14 +74,17 @@ import {ViewcustomerComponent} from './viewcustomer/viewcustomer.component';
             multi: true
         },
         CustomerserviceService,
+        AccountService,
+        DataService,
+        StateCitydataService,
+
         // provider used to create fake backend
-        fakeBackendProvider,
-        DataService
+        fakeBackendProvider
     ],
-    //Don't forget to add the component to entryComponents section
-     entryComponents: [
-       ConfirmComponent
-     ],
+  //Don't forget to add the component to entryComponents section
+    entryComponents: [
+      ConfirmComponent
+    ],
     bootstrap: [AppComponent]
 })
 

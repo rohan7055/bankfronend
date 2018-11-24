@@ -1,73 +1,76 @@
 <div class="container col-md-6 col-md-offset-3">
     <h2>Update Customer</h2>
-    <form name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
-        <div class="form-row" [ngClass]="{ 'has-error': f.submitted && !firstName.valid }">
-            <label class="col-sm-4 col-form-label" for="firstName">Customer SSN ID</label>
+    <form name="form" novalidate [formGroup]="updateCustomerForm" (ngSubmit)="onSubmit()">
+        <div class="form-row" [ngClass]="{'form-row has-error' : true }">
+            <label class="col-sm-4 col-form-label" for="ssn">Customer SSN ID</label>
             <div class="col-sm-8">
-            <input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel" required />
-            <div *ngIf="f.submitted && !firstName.valid" class="help-block">First Name is required</div>
+            <input type="text" class="form-control" formControlName="ssn" [maxlength]="9" />
+            <span class="help-block" style="color:red" *ngIf="updateCustomerForm.get('ssn').hasError('required') && (updateCustomerForm.get('ssn').touched || updateCustomerForm.get('ssn').dirty) "> SSN is required </span>
+           	<span class="help-block" style="color:red" *ngIf="(updateCustomerForm.get('ssn').hasError('minlength')|| updateCustomerForm.get('ssn').hasError('maxlength')) && (updateCustomerForm.get('ssn').touched)"> Length of ssn should be 9 </span>
+            <span class="help-block" style="color:red" *ngIf="(updateCustomerForm.get('ssn').hasError('pattern') && !updateCustomerForm.get('ssn').hasError('minlength') && !updateCustomerForm.get('ssn').hasError('maxlength')) && (updateCustomerForm.get('ssn').touched)"> Enter valid SSN </span>
             </div>
         </div>
         <br>
-        <div class="form-row" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
-            <label class="col-sm-4 col-form-label" for="lastName">Customer Name</label>
+        <div class="form-row" >
+            <label class="col-sm-4 col-form-label" for="cust_name">Customer Name</label>
              <div class="col-sm-8">
-            <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" required />
-            <div *ngIf="f.submitted && !lastName.valid" class="help-block">Last Name is required</div>
+            <input type="text" class="form-control" formControlName="cust_name"  />
+            <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('cust_name').hasError('required') && (updateCustomerForm.get('cust_name').touched || updateCustomerForm.get('cust_name').dirty) ">Customer name is required</span>
+            <span class="help-block" style="color:red" *ngIf="(updateCustomerForm.get('ssn').hasError('pattern')) && (updateCustomerForm.get('ssn').touched)"> Enter valid customer name </span>
              </div>
         </div>
          <br>
         
-        <div class="form-row" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
-            <label class="col-sm-4 col-form-label" for="lastName">Old Customer Name</label>
+        <div class="form-row">
+            <label class="col-sm-4 col-form-label" for="old_cust_name">Old Customer Name</label>
              <div class="col-sm-8">
-            <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" required />
-            <div *ngIf="f.submitted && !lastName.valid" class="help-block">Last Name is required</div>
+            <input type="text" class="form-control" formControlName="old_cust_name" />
+            <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('old_cust_name').hasError('required') && (updateCustomerForm.get('old_cust_name').touched || updateCustomerForm.get('old_cust_name').dirty) ">Customer Name is required</span>
              </div>
         </div>
         <br>
-         <div class="form-row" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
-            <label class="col-sm-4 col-form-label" for="lastName">New Customer Name</label>
+         <div class="form-row">
+            <label class="col-sm-4 col-form-label" for="new_cust_name">New Customer Name</label>
              <div class="col-sm-8">
-            <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" required />
-            <div *ngIf="f.submitted && !lastName.valid" class="help-block">Last Name is required</div>
+            <input type="text" class="form-control" formControlName="new_cust_name" />
+           <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('new_cust_name').hasError('required') && (updateCustomerForm.get('new_cust_name').touched || updateCustomerForm.get('new_cust_name').dirty) ">Customer Name is required</span>
              </div>
         </div>
         <br>
-          <div class="form-row" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
-            <label class="col-sm-4 col-form-label" for="lastName">Old Address</label>
+          <div class="form-row">
+            <label class="col-sm-4 col-form-label" for="old_cust_addr">Old Address</label>
              <div class="col-sm-8">
-            <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" required />
-            <div *ngIf="f.submitted && !lastName.valid" class="help-block">Last Name is required</div>
+            <input type="text" class="form-control" formControlName="old_cust_addr"  />
+            <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('old_cust_addr').hasError('required') && (updateCustomerForm.get('old_cust_addr').touched || updateCustomerForm.get('old_cust_addr').dirty) ">Address is required</span>
              </div>
         </div>
          <br>
-          <div class="form-row" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
-            <label class="col-sm-4 col-form-label" for="lastName">New Address</label>
+          <div class="form-row" >
+            <label class="col-sm-4 col-form-label" for="new_cust_addr">New Address</label>
              <div class="col-sm-8">
-            <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" required />
-            <div *ngIf="f.submitted && !lastName.valid" class="help-block">Last Name is required</div>
+            <input type="text" class="form-control" formControlName="new_cust_addr"  />
+           <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('new_cust_addr').hasError('required') && (updateCustomerForm.get('new_cust_addr').touched || updateCustomerForm.get('new_cust_addr').dirty) ">New Address is required</span>
              </div>
         </div>
          <br>
-          <div class="form-row" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
-            <label class="col-sm-4 col-form-label" for="lastName">Old Age</label>
+          <div class="form-row" >
+            <label class="col-sm-4 col-form-label" for="old_cust_age">Old Age</label>
              <div class="col-sm-8">
-            <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" required />
-            <div *ngIf="f.submitted && !lastName.valid" class="help-block">Last Name is required</div>
+            <input type="text" class="form-control" formControlName="old_cust_age"  />
+           <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('old_cust_age').hasError('required') && (updateCustomerForm.get('old_cust_age').touched || updateCustomerForm.get('old_cust_age').dirty) ">Old is required</span>
              </div>
         </div>
          <br>
-          <div class="form-row" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
-            <label class="col-sm-4 col-form-label" for="lastName">New Age</label>
+          <div class="form-row" >
+            <label class="col-sm-4 col-form-label" for="new_cust_age">New Age</label>
              <div class="col-sm-8">
-            <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" required />
-            <div *ngIf="f.submitted && !lastName.valid" class="help-block">Last Name is required</div>
+            <input type="text" class="form-control" formControlName="new_cust_age"/>
+            <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('new_cust_age').hasError('required') && (updateCustomerForm.get('new_cust_age').touched || updateCustomerForm.get('new_cust_age').dirty) ">New age is required</span>
              </div>
         </div>
         <br>
         <div class="form-group" align="center">
-            <button [disabled]="loading" class="btn btn-primary col-sm-4">Update</button>
+            <button [disabled]="loading || (!updateCustomerForm.valid)" class="btn btn-primary col-sm-4">Update</button>
             <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
         </div>
     </form>

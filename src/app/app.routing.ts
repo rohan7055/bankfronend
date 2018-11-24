@@ -7,7 +7,14 @@ import { AuthGuard } from './_guards/index';
 import {CreatecustomerComponent} from './createcustomer/index';
 import {UpdatecustomerComponent} from './updatecustomer/index';
 import {DeletecustomerComponent} from './deletecustomer/index';
+import {DeleteaccountComponent} from './deleteaccount/index';
+import {CreateaccountComponent} from './createaccount/index';
 import {ViewcustomerComponent} from './viewcustomer/viewcustomer.component';
+import {ViewaccountComponent} from './viewaccount/viewaccount.component';
+import {ViewallcustomersComponent} from './viewallcustomers/viewallcustomers.component';
+import{ViewallaccountsComponent} from './viewallaccounts/index';
+
+
 
 
 const appRoutes: Routes = [
@@ -17,7 +24,14 @@ const appRoutes: Routes = [
     {path:'createcustomer',component:CreatecustomerComponent, canActivate: [AuthGuard]},
     {path:'updatecustomer',component:UpdatecustomerComponent, canActivate: [AuthGuard]},
     {path: 'deletecustomer',component:DeletecustomerComponent, canActivate: [AuthGuard]},
+    {path: 'deleteaccount',component:DeleteaccountComponent, canActivate: [AuthGuard]},
+    {path: 'createaccount',component:CreateaccountComponent, canActivate: [AuthGuard]},
     {path: 'viewcustomer',component:ViewcustomerComponent, canActivate: [AuthGuard]},
+    {path: 'viewaccount',component:ViewaccountComponent, canActivate: [AuthGuard]},
+    {path: 'viewallcustomers',component:ViewallcustomersComponent, canActivate: [AuthGuard]},
+    {path: 'viewallaccounts',component:ViewallaccountsComponent, canActivate: [AuthGuard]},
+
+
 
 
 

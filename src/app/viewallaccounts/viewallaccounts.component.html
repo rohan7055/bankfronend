@@ -1,0 +1,46 @@
+<table class="table table-striped" [mfData]="accounts" #mf="mfDataTable" [mfRowsOnPage]="5">
+
+                <thead>
+                <tr>
+                    <th style="width: 20%">
+                        <mfDefaultSorter by="name">Account ID</mfDefaultSorter>
+                    </th>
+                    <th style="width: 20%">
+                        <mfDefaultSorter by="email">Customer ID</mfDefaultSorter>
+                    </th>
+                    <th style="width: 20%">
+                        <mfDefaultSorter by="age">Balance</mfDefaultSorter>
+                    </th>
+                    <th style="width: 20%">
+                        <mfDefaultSorter [by]="sortByWordLength">Type</mfDefaultSorter>
+                    </th>
+                    <th style="width: 20%">
+                        <mfDefaultSorter [by]="sortByWordLength">Status</mfDefaultSorter>
+                    </th>
+
+                    <th style="width: 10%"></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let account of accounts">
+
+                    <td>{{account.acct_id}}</td>
+                    <td>{{account.cust_id}}</td>
+                    <td class="text-left">{{account.acct_balance}}</td>
+                    <td>{{account.acct_type | uppercase}}</td>
+                    <td>{{account.acct_status | uppercase}}</td>
+                    <td>
+                        <button (click)="remove(customer)" class="btn btn-danger">x</button>
+                    </td>
+
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="5">
+                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>

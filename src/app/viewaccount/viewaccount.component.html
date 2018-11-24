@@ -1,0 +1,27 @@
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Account Search</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="form"  novalidate [formGroup]="searchAccountForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="accountId" class="col-form-label">Enter Account ID:</label>
+            <input type="text" class="form-control" id="recipient-name" formControlName="acct_Id">
+          </div>
+        <!--  <p class="text-center">OR</p>
+          <div class="form-group">
+            <label for="customerId" class="col-form-label">Enter Customer ID:</label>
+            <input type="text" class="form-control" id="recipient-name" formControlName="customerId">
+          </div>
+           -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" >Close</button>
+        <button type="button" class="btn btn-primary">Search</button>
+      </div>
+      </form>
+    </div>
+  </div>
