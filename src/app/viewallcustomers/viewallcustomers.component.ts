@@ -11,7 +11,7 @@ import {CustomerserviceService} from '../_services/index';
 })
 export class ViewallcustomersComponent implements OnInit {
     model:any;
-customers : Customer[]=[];
+    customers : Customer[]=[];
 
 
 

@@ -30,7 +30,7 @@ import {ViewcustomerComponent} from './viewcustomer/viewcustomer.component';
 import {ViewaccountComponent} from './viewaccount/viewaccount.component';
 import {ViewallcustomersComponent}from './viewallcustomers/viewallcustomers.component';
 import{ViewallaccountsComponent} from './viewallaccounts/index';
-import {NG2DataTableModule} from "angular2-datatable-pagination";
+import {DataTableModule} from "angular2-datatable";
 
 
 
@@ -41,9 +41,8 @@ import {NG2DataTableModule} from "angular2-datatable-pagination";
         HttpClientModule,
         routing,
         ReactiveFormsModule,
-        BootstrapModalModule,
-        NG2DataTableModule
-    ],
+        BootstrapModalModule  ,
+      DataTableModule  ],
     declarations: [
         AppComponent,
         AlertComponent,

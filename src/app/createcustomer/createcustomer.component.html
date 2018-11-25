@@ -1,9 +1,23 @@
 <div class="container col-md-6 col-md-offset-3">
     <h2>Create Customer</h2>
     <form name="form"  novalidate [formGroup]="createCustomerForm" (ngSubmit)="onSubmit()" >
-        <div class="form-group" [ngClass]="{'alert alert-danger': createCustomerForm.get('ssn').errors && (createCustomerForm.get('ssn').touched || createCustomerForm.get('ssn').dirty)}">
+        <div class="form-group">
             <label for="SSN">Customer SSN ID</label>
-            <input type="text" class="form-control" formControlName="ssn" (blur)="onBlurMethod()" required />
+            <input type="text" #refName class="form-control" formControlName="ssn" [maxlength]="9" (blur)="onBlurMethod()" required />
+            <!--<b>{{refName.className}}</b>-->
+            <p *ngIf="createCustomerForm.controls['ssn'].hasError('required')&&!createCustomerForm.controls['ssn'].pristine" >
+             SSN ID is required
+            </p>
+            <p *ngIf="createCustomerForm.controls['ssn'].hasError('minlength')&&!createCustomerForm.controls['ssn'].pristine" >
+              SSN should be  9 digits
+            </p>
+            <p *ngIf="createCustomerForm.controls['ssn'].hasError('maxlength')&&!createCustomerForm.controls['ssn'].pristine" >
+              SSN should be  9 digits
+            </p>
+            <p *ngIf="createCustomerForm.controls['ssn'].hasError('pattern')&&createCustomerForm.controls['ssn'].dirty" >
+              SSN should only be digits
+            </p>
+          <!--  <b>{{refName.className}}</b>-->
               <img *ngIf="loadingName" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
 
 
@@ -11,10 +25,25 @@
         <div class="form-group"  [ngClass]="{'has-error': createCustomerForm.get('cust_name').errors && (createCustomerForm.get('cust_name').touched || createCustomerForm.get('cust_name').dirty)}">
             <label for="customerName">Customer Name</label>
             <input type="text" class="form-control" formControlName="cust_name" [disabled]="disable" required />
+            <p *ngIf="createCustomerForm.controls['cust_name'].hasError('pattern')&&createCustomerForm.controls['cust_name'].dirty" >
+              Customer Name should only be alphabets
+            </p>
+            <p *ngIf="createCustomerForm.controls['cust_name'].hasError('minlength')&&!createCustomerForm.controls['cust_name'].pristine" >
+              Name should contain min 5 characters
+            </p>
+            <p *ngIf="createCustomerForm.controls['cust_name'].hasError('maxlength')&&!createCustomerForm.controls['cust_name'].pristine" >
+              Name should contain max 50 characters
+            </p>
         </div>
         <div class="form-group">
             <label for="username">Age</label>
             <input type="text" class="form-control" formControlName="cust_age" [disabled]="disable" required />
+            <p *ngIf="createCustomerForm.controls['cust_age'].hasError('required')&&!createCustomerForm.controls['cust_age'].pristine" >
+             Age is required
+            </p>
+            <p *ngIf="(createCustomerForm.controls['cust_age'].hasError('min')||createCustomerForm.controls['cust_age'].hasError('max'))&&createCustomerForm.controls['cust_age'].dirty" >
+              Customer Should have min 18 yrs and max 99 yrs
+            </p>
         </div>
         <div class="form-group">
             <label for="password">Address</label>
@@ -24,20 +53,24 @@
          <div class="form-group">
                <label for="exampleFormControlSelect1">State</label>
                <select class="form-control" formControlName="cust_state" [disabled]="disable">
-                               <option [value]=null selected=true>---Select State---</option>
                  <option *ngFor="let state of states" [value]="state">{{state}}</option>
                 </select>
+                <p *ngIf="createCustomerForm.controls['cust_state'].hasError('required')&&!createCustomerForm.controls['cust_state'].pristine" >
+                 State is required
+                </p>
          </div>
 
          <div class="form-group">
                <label for="exampleFormControlSelect1" >City</label>
-               <select class="form-control" formControlName="cust_city" [disabled]="disable">
-                <option [value]=null selected>---Select City---</option>
+               <select class="form-control" formControlName="cust_city" [disabled]="disable" placeholde="Slec">
                 <option *ngFor="let city of cities" [value]="city">{{city}}</option>
                </select>
+               <p *ngIf="createCustomerForm.controls['cust_city'].hasError('required')&&!createCustomerForm.controls['cust_city'].pristine" >
+                City is required
+               </p>
              </div>
         <div class="form-group">
-            <button  class="btn btn-primary" [disabled]="disable" >Submit</button>
+            <button  class="btn btn-primary" [disabled]="!createCustomerForm.valid" >Submit</button>
             <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
             <a class="btn btn-link" (click)="onReset()" >Reset</a>
         </div>

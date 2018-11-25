@@ -45,11 +45,11 @@ export class CreatecustomerComponent implements OnInit {
 
         this.stateCityData.getJSON()
         .subscribe(data=>{
-            console.log(data)
+            //console.log(data)
             this.citystatedata=data;
             for (let key in data) {
             this.states.push(key)
-           console.log(key);
+           //console.log(key);
           }
         },error=>{
             console.log(error)
@@ -61,8 +61,21 @@ export class CreatecustomerComponent implements OnInit {
                this.cities=this.citystatedata[key]
                }
 
-              console.log(key);
+              //console.log(key);
              }
+    });
+
+
+
+    this.createCustomerForm.get('ssn').valueChanges.subscribe(ssn => {
+          if(this.check_if_is_integer(ssn)){
+            if(ssn<=0){
+              this.createCustomerForm.get('ssn').setValue('');
+            }
+          }
+          else if(ssn=="+"||ssn=="-"||ssn=="@"||ssn=="^"||ssn=="!"||ssn=="%"||ssn=="&"||ssn==" "){
+            this.createCustomerForm.get('ssn').setValue('');
+          }
     });
 
 
@@ -78,12 +91,14 @@ export class CreatecustomerComponent implements OnInit {
     buildForm()
     {
         this.createCustomerForm = this.formBuilder.group({
-            ssn : this.formBuilder.control('',Validators.required),
-            cust_name :this.formBuilder.control('',Validators.required),
-            cust_age : this.formBuilder.control('',Validators.required),
-            cust_addr : this.formBuilder.control('',Validators.required),
-            cust_state :this.formBuilder.control('',Validators.required),
-            cust_city : this.formBuilder.control('',Validators.required)
+            ssn : this.formBuilder.control('',[Validators.required,Validators.minLength(9),Validators.maxLength(9),
+            Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+            cust_name :this.formBuilder.control('',[Validators.required,Validators.pattern(/^[a-zA-Z][a-zA-Z\s]+$/),
+          Validators.minLength(5),Validators.maxLength(50)]),
+            cust_age : this.formBuilder.control('',[Validators.required,Validators.min(18),Validators.max(99)]),
+            cust_addr : this.formBuilder.control('',[Validators.required]),
+            cust_state :this.formBuilder.control('',[Validators.required]),
+            cust_city : this.formBuilder.control('',[Validators.required])
 
         });
     }
@@ -115,7 +130,34 @@ export class CreatecustomerComponent implements OnInit {
         this.createCustomerForm.reset();
     }
 
+    check_if_is_integer(value){
+   if((parseFloat(value) == parseInt(value)) && !isNaN(value)){
+      // I can have spacespacespace1 - which is 1 and validators pases but
+      // spacespacespace doesn't - which is what i wanted.
+      // 1space2 doesn't pass - good
+      // of course, when saving data you do another parseInt.
+       return true;
+   } else {
+       return false;
+   }
+      }
+
+
     onBlurMethod(){
+      let ssnid=this.createCustomerForm.value['ssn']
+      console.log("is num",this.check_if_is_integer(ssnid))
+      if(ssnid.length<9||ssnid.length>9||!this.check_if_is_integer(ssnid)){
+        this.disableForm(true);
+        console.log(1)
+
+      }else if(ssnid.length==9&&!this.check_if_is_integer(ssnid)){
+        this.disableForm(true);
+        console.log(2)
+
+      }
+      else if(ssnid.length==9&&this.check_if_is_integer(ssnid)){
+        console.log(3)
+
         this.disableForm(true);
         this.loadingName=true;
         this.disable=true;
@@ -141,7 +183,7 @@ export class CreatecustomerComponent implements OnInit {
         },error=>{
          this.alertService.error("Some Error Occured");
         })
-
+      }
       }
 
     disableForm(disable:boolean){
