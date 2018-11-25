@@ -2,25 +2,45 @@
 	<form [formGroup]="createAccountForm" (ngSubmit)="onSubmit()">
 		<div class="form-group">
 			<label for="cust_id"> Customer ID : </label>
-			<input type="text" class="form-control" formControlName="cust_id" />
-
+			<input type="text" class="form-control" formControlName="cust_id" [maxlength]="9" required/>
+			<p *ngIf="createAccountForm.controls['cust_id'].hasError('required')&&createAccountForm.controls['cust_id'].touched" >
+			 Customer id ID is required
+			</p>
+			<p *ngIf="createAccountForm.controls['cust_id'].hasError('minlength')&&!createAccountForm.controls['cust_id'].pristine" >
+				Customer id should be  9 digits
+			</p>
+			<p *ngIf="createAccountForm.controls['cust_id'].hasError('maxlength')&&!createAccountForm.controls['cust_id'].pristine" >
+				Customer id should be  9 digits
+			</p>
+			<p *ngIf="createAccountForm.controls['cust_id'].hasError('pattern')&&createAccountForm.controls['cust_id'].dirty" >
+				Customer id should only be digits
+			</p>
 		</div>
 		<div class="form-group">
 			<label for="acct_type"> Account Type : </label>
-			<select class="form-control" formControlName="acct_type" >
+			<select class="form-control">
 						<option value="S">Saving</option>
 						<option value="C">Current</option>
-			</select>			
+			</select>
 		</div>
-		
+
 		<div class="form-group">
 			<label for="acct_balance"> Deposit Amount : </label>
 			<input type="text" class="form-control" formControlName="acct_balance" />
-		</div>
-		
-		<div class="form-group">
-			<button type="submit"> Submit </button>
+			<p *ngIf="createAccountForm.controls['acct_balance'].hasError('required')&&createAccountForm.controls['acct_balance'].touched" >
+			 Balance is required
+			</p>
+			<p *ngIf="(createAccountForm.controls['acct_balance'].hasError('min'))&&createAccountForm.controls['acct_balance'].dirty" >
+				Balance cannot be negative
+			</p>
+			<p *ngIf="(createAccountForm.controls['acct_balance'].hasError('pattern'))&&createAccountForm.controls['acct_balance'].dirty" >
+				Balance is invalid
+			</p>
 		</div>
 
+		<div class="form-group">
+			<button type="submit" class="btn btn-primary" [disabled]="!createAccountForm.valid"> Submit </button>
+			<button type="button" class="btn btn-primary" (click)="onReset()"> Reset </button>
+		</div>
 	</form>
 </div>

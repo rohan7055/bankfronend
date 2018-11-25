@@ -30,21 +30,20 @@ export class DeleteaccountComponent implements OnInit {
     buildForm()
     {
         this.deleteAccountForm = this.formBuilder.group({
-            AccountId : this.formBuilder.control(null,[Validators.maxLength(9)]),
-            AccountType : this.formBuilder.control('Savings Account')
+            acct_id : this.formBuilder.control('',[Validators.required,Validators.maxLength(9),Validators.pattern(/^-?(0|[1-9]\d*)?$/)])
         });
     }
 
 
     onSubmit()
     {
-        let  AccountId=this.deleteAccountForm.value['AccountId'];
-        let AccountType = this.deleteAccountForm.value['AccountType'];
-        console.log( AccountId);
+        let acct_id=this.deleteAccountForm.value['acct_id'];
+        let acct_type = this.deleteAccountForm.value['acct_type'];
+        console.log(acct_id);
         this.loading=true;
 
 
-        this.AccountService.deleteAccount(AccountId,AccountType )
+        this.AccountService.deleteAccount(acct_id,acct_type )
         .subscribe(data=>{
           this.loading=false;
             console.log(data)
@@ -87,5 +86,9 @@ export class DeleteaccountComponent implements OnInit {
 
     }
 
+    onReset()
+    {
+        this.deleteAccountForm.reset();
+    }
 
 }

@@ -29,8 +29,8 @@ export class DeletecustomerComponent implements OnInit {
     buildForm()
     {
         this.deleteCustomerForm = this.formBuilder.group({
-            ssn : this.formBuilder.control(null,[Validators.maxLength(9)]),
-            cust_id : this.formBuilder.control(null,[Validators.maxLength(9)])
+            ssn : this.formBuilder.control(null,[Validators.maxLength(9),Validators.pattern(/^[0-9]{9}$/)]),
+            cust_id : this.formBuilder.control(null,[Validators.maxLength(9),Validators.pattern(/^[0-9]{9}$/)])
         });
     }
 
@@ -41,8 +41,7 @@ export class DeletecustomerComponent implements OnInit {
         let ssn = this.deleteCustomerForm.value['ssn'];
         console.log(custid);
         this.loading=true;
-
-
+        
         this.customerservice.delete(custid)
         .subscribe(data=>{
           this.loading=false;
@@ -62,7 +61,10 @@ export class DeletecustomerComponent implements OnInit {
                 })
 
     }
-
+    onReset()
+    {
+        this.deleteCustomerForm.reset();
+    }
     onBlurMethod(){
       this.loadingCustID=true;
       let custid=this.deleteCustomerForm.value['cust_id'];
