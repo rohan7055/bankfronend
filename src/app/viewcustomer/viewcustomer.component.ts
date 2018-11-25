@@ -15,8 +15,9 @@ customer : any;
 
 
   constructor(private dataService:DataService) {
-    this.model=JSON.stringify(this.dataService.storage);
-    this.customer = JSON.parse(this.model);
+    console.log("Data",this.dataService.storage)
+    //this.model=JSON.parse(this.dataService.storage);
+    this.customer = new Customer(this.dataService.storage);
 
   console.log(this.customer); }
 

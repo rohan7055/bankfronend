@@ -29,8 +29,7 @@ export class DeletecustomerComponent implements OnInit {
     buildForm()
     {
         this.deleteCustomerForm = this.formBuilder.group({
-            ssn : this.formBuilder.control(null,[Validators.maxLength(9)]),
-            cust_id : this.formBuilder.control(null,[Validators.maxLength(9)])
+            cust_id : this.formBuilder.control('',[Validators.maxLength(9)])
         });
     }
 

@@ -55,6 +55,15 @@ export class CustomerserviceService {
 
   }
   //4.Search Customer
+  getcustomerbycustId(cust_id:number){
+    return this.http.post<any>("http://localhost:5000/RetailBanking_GroupB/customer/getcustomerbycustId",{cust_id:cust_id},this.httpOptions)
+
+  }
+
+  getcustomerbySSN(ssn:number){
+    return this.http.post<any>("http://localhost:5000/RetailBanking_GroupB/customer/getcustomerbySSN",{ssn:ssn},this.httpOptions)
+
+  }
   //5.View All Customers
   viewallcustomers(){
     return this.http.post<any>("http://localhost:5000/RetailBanking_GroupB/customer/viewall",{},this.httpOptions)

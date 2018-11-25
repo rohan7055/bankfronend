@@ -26,7 +26,7 @@ const appRoutes: Routes = [
     {path: 'deletecustomer',component:DeletecustomerComponent, canActivate: [AuthGuard]},
     {path: 'deleteaccount',component:DeleteaccountComponent, canActivate: [AuthGuard]},
     {path: 'createaccount',component:CreateaccountComponent, canActivate: [AuthGuard]},
-    {path: 'viewcustomer',component:ViewcustomerComponent, canActivate: [AuthGuard]},
+    {path: 'viewcustomer/:id',component:ViewcustomerComponent, canActivate: [AuthGuard]},
     {path: 'viewaccount',component:ViewaccountComponent, canActivate: [AuthGuard]},
     {path: 'viewallcustomers',component:ViewallcustomersComponent, canActivate: [AuthGuard]},
     {path: 'viewallaccounts',component:ViewallaccountsComponent, canActivate: [AuthGuard]},
