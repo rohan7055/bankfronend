@@ -18,10 +18,13 @@
 		</div>
 		<div class="form-group">
 			<label for="acct_type"> Account Type : </label>
-			<select class="form-control">
+			<select class="form-control" formControlName="acct_type" >
 						<option value="S">Saving</option>
 						<option value="C">Current</option>
 			</select>
+			<p *ngIf="createAccountForm.controls['acct_type'].hasError('required')&&createAccountForm.controls['acct_type'].touched" >
+			 Account type is required
+			</p>
 		</div>
 
 		<div class="form-group">
@@ -40,7 +43,7 @@
 
 		<div class="form-group">
 			<button type="submit" class="btn btn-primary" [disabled]="!createAccountForm.valid"> Submit </button>
-			<button type="button" class="btn btn-primary" (click)="onReset()"> Reset </button>
+			<button type="button" class="btn btn-secondary" (click)="onReset()"> Reset </button>
 		</div>
 	</form>
 </div>

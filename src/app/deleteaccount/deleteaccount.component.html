@@ -1,38 +1,37 @@
 <div class="container col-md-6 col-md-offset-3">
-	<form name="deleteAccount" [formGroup]="deleteAccountForm" (submit)="onSubmit()" novalidate>
+	<form [formGroup]="deleteAccountForm" (ngSubmit)="onSubmit()">
 		<div class="form-group">
-			<label for="AccountId"> Account ID : </label>
-			<input type="text" #refName class="form-control" formControlName="acct_id" (blur)="onBlurMethod()"/>
-			<h1>{{refName.className}}</h1>
-			<p *ngIf="createCustomerForm.controls['acct_id'].hasError('required')&&!createCustomerForm.controls['acct_id'].pristine" >
-			 Account id is required
+			<label for="acct_id"> Account ID : </label>
+			<input type="text" class="form-control" formControlName="acct_id" [maxlength]="9" required/>
+		<!--	<p *ngIf="deleteAccountForm.controls['acct_id'].hasError('required')&&deleteAccountForm.controls['acct_id'].touched" >
+			 Customer id ID is required
 			</p>
-			<p *ngIf="deleteAccountForm.controls['acct_id'].hasError('minlength')&&!createCustomerForm.controls['acct_id'].pristine" >
-				Account id should be  9 digits
+			<p *ngIf="deleteAccountForm.controls['acct_id'].hasError('minlength')&&!deleteAccountForm.controls['acct_id'].pristine" >
+				Customer id should be  9 digits
 			</p>
-			<p *ngIf="deleteAccountForm.controls['acct_id'].hasError('maxlength')&&!createCustomerForm.controls['acct_id'].pristine" >
-				Account id should be  9 digits
+			<p *ngIf="deleteAccountForm.controls['acct_id'].hasError('maxlength')&&!deleteAccountForm.controls['acct_id'].pristine" >
+				Customer id should be  9 digits
 			</p>
-			<p *ngIf="deleteAccountForm.controls['acct_id'].hasError('pattern')&&createCustomerForm.controls['acct_id'].dirty" >
-				Account id should only be digits
+			<p *ngIf="deleteAccountForm.controls['acct_id'].hasError('pattern')&&deleteAccountForm.controls['acct_id'].dirty" >
+				Customer id should only be digits
 			</p>
+			-->
 		</div>
 		<div class="form-group">
-			<div class="form-group">
-				<label for="acct_type"> Account Type : </label>
-				<select class="form-control">
-							<option value="S">Saving</option>
-							<option value="C">Current</option>
-				</select>
+			<label for="acct_type"> Account Type : </label>
+			<select class="form-control" formControlName="acct_type" >
+						<option value="S">Saving</option>
+						<option value="C">Current</option>
+			</select>
+		<!--	<p *ngIf="deleteAccountForm.controls['acct_type'].hasError('required')&&deleteAccountForm.controls['acct_type'].touched" >
+			 Account type is required
+			</p>
+			-->
+		</div>
 
-			</div>
-			</div>
 		<div class="form-group">
-			<button type="submit" class="btn btn-primary" [disabled]="!deleteAccountForm.valid"> Delete </button>
+			<button type="submit" class="btn btn-primary" [disabled]="!deleteAccountForm.valid"> Submit </button>
 			<button type="button" class="btn btn-secondary" (click)="onReset()"> Reset </button>
-			<img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-
 		</div>
-
 	</form>
 </div>

@@ -30,7 +30,7 @@ export class DeleteaccountComponent implements OnInit {
     buildForm()
     {
         this.deleteAccountForm = this.formBuilder.group({
-            acct_id : this.formBuilder.control('',[Validators.required,Validators.maxLength(9),Validators.pattern(/^-?(0|[1-9]\d*)?$/)])
+            acct_id : this.formBuilder.control('')
         });
     }
 
