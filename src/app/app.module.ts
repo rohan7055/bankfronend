@@ -12,7 +12,7 @@ import { fakeBackendProvider } from './_helpers/index';
 import { AppComponent }  from './app.component';
 import { routing }        from './app.routing';
 
-import { AlertComponent ,ConfirmComponent} from './_directives/index';
+import { AlertComponent ,ConfirmComponent,CustomermodalsearchComponent,AccountmodalsearchComponent} from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor } from './_helpers/index';
 import { AlertService, AuthenticationService, UserService ,CustomerserviceService, AccountService,DataService,StateCitydataService} from './_services/index';
@@ -60,7 +60,9 @@ import {DataTableModule} from "angular2-datatable";
         ViewcustomerComponent,
         ViewaccountComponent,
         ViewallcustomersComponent,
-        ViewallaccountsComponent
+        ViewallaccountsComponent,
+        CustomermodalsearchComponent,
+        AccountmodalsearchComponent
     ],
     providers: [
         AuthGuard,
@@ -82,7 +84,9 @@ import {DataTableModule} from "angular2-datatable";
     ],
   //Don't forget to add the component to entryComponents section
     entryComponents: [
-      ConfirmComponent
+      ConfirmComponent,
+      CustomermodalsearchComponent,
+      AccountmodalsearchComponent
     ],
     bootstrap: [AppComponent]
 })

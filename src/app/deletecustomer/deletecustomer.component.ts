@@ -41,7 +41,7 @@ export class DeletecustomerComponent implements OnInit {
         let ssn = this.deleteCustomerForm.value['ssn'];
         console.log(custid);
         this.loading=true;
-        
+
         this.customerservice.delete(custid)
         .subscribe(data=>{
           this.loading=false;
