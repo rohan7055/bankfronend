@@ -44,6 +44,16 @@ export class CustomerserviceService {
     return this.http.post<any>("http://localhost:5000/RetailBanking_GroupB/customer/checkupdatecustomer",{ssn:ssnid},this.httpOptions)
 
   }
+
+  updatecustomer(ssn:number,cust_name:string,cust_addr:string,cust_age:number){
+    return this.http.post<any>("http://localhost:5000/RetailBanking_GroupB/customer/updatecustomer",{
+      ssn:ssn,
+      cust_name:cust_name,
+      cust_addr:cust_addr,
+      cust_age:cust_age
+    },this.httpOptions);
+
+  }
   //4.Search Customer
   //5.View All Customers
   viewallcustomers(){

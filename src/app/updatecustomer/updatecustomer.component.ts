@@ -17,10 +17,14 @@ export class UpdatecustomerComponent implements OnInit {
    cust_name="Rohan";
    show:boolean=false;
    loading:boolean=false;
+   loadingSSN:boolean=false;
    found:boolean=false;
    reset:boolean=false;
    check:boolean=true;
    disable:boolean=false;
+   customer:Customer;
+   ssnreadonly:boolean=false;
+   notNum:boolean=false;
 
     updateCustomerForm : FormGroup;
     constructor(private formBuilder: FormBuilder,
@@ -32,21 +36,31 @@ export class UpdatecustomerComponent implements OnInit {
         this.buildForm();
     }
 
-    ngOnInit() {
-    }
+    ngOnInit(){
+    this.updateCustomerForm.get('ssn').valueChanges.subscribe(ssn => {
+          if(this.check_if_is_integer(ssn)){
+            if(ssn<=0){
+              this.updateCustomerForm.get('ssn').setValue('');
+            }
+          }
+          else if(ssn=="+"||ssn=="-"||ssn=="@"||ssn=="^"||ssn=="!"||ssn=="%"||ssn=="&"||ssn==" "){
+            this.updateCustomerForm.get('ssn').setValue('');
+          }
+    });
+  }
 
     buildForm()
     {
         this.updateCustomerForm = this.formBuilder.group({
-            ssn: ['',Validators.compose([Validators.required,Validators.minLength(9),Validators.maxLength(9),Validators.pattern('^[0-9]{9}$')])],
+            ssn: ['',Validators.compose([Validators.required,Validators.minLength(9),Validators.maxLength(9),Validators.pattern(/^-?(0|[1-9]\d*)?$/)])],
 
-            cust_name: ['',Validators.compose([Validators.required,Validators.pattern('^[0-9]{9}$')])],
-            old_cust_name: ['',Validators.compose([Validators.required,Validators.pattern('^[a-zA-Z]$')])],
-            new_cust_name: ['',Validators.compose([Validators.required,Validators.pattern('^[a-zA-Z]$')])],
-            old_cust_addr: ['',Validators.compose([Validators.required])],
+            cust_name: ['',Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z][a-zA-Z\s]+$/)])],
+            new_cust_name: ['',Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z][a-zA-Z\s]+$/),
+          Validators.minLength(5),Validators.maxLength(50)])],
+            cust_addr: ['',Validators.compose([Validators.required])],
             new_cust_addr: ['',Validators.compose([Validators.required])],
-            old_cust_age: ['',Validators.compose([Validators.required,Validators.pattern('^[0-9]{2}$')])],
-            new_cust_age: ['',Validators.compose([Validators.required,Validators.pattern('^[0-9]{2}$')])]
+            cust_age: ['',Validators.compose([Validators.required,Validators.pattern('^[0-9]{2}$')])],
+            new_cust_age: ['',Validators.compose([Validators.required,Validators.min(18),Validators.max(99),Validators.required,Validators.pattern(/^-?(0|[1-9]\d*)?$/)])]
             });
     }
 
@@ -56,19 +70,26 @@ export class UpdatecustomerComponent implements OnInit {
     }
 
     checkCustomer(){
-      this.loading=true;
+      this.loadingSSN=true;
       console.log(this.updateCustomerForm.value['ssn'])
+      if(this.check_if_is_integer(this.updateCustomerForm.value['ssn'])){
       this.customerService.checkupdatecustomer(this.updateCustomerForm.value['ssn'])
       .subscribe(data=>{
-        this.loading=false;
+        this.loadingSSN=false;
         console.log(data)
+
         if(data['status']){
+          this.customer=new Customer(data['data'])
+          console.log(this.customer.cust_id)
           this.show=true;
           this.disable=true;
           this.check=false;
           this.reset=true;
           this.found=true;
-          this.updateCustomerForm.controls['ssn'].disable();
+          this.setData(this.customer)
+         //  this.updateCustomerForm.controls['ssn'].disable();
+         this.ssnreadonly=true;
+
           this.alertService.success(data['message']);
 
         }else{
@@ -82,10 +103,14 @@ export class UpdatecustomerComponent implements OnInit {
         }
 
       },error=>{
-        this.loading=false;
+        this.loadingSSN=false;
 
        this.alertService.error("Some Error Occured");
       })
+    }else{
+      this.notNum=true;
+    }
+
     }
 
 
@@ -147,6 +172,14 @@ export class UpdatecustomerComponent implements OnInit {
             },10000);
         }
 
+        setData(customer:Customer){
+          this.updateCustomerForm.get('cust_name').setValue(customer.cust_name)
+          this.updateCustomerForm.get('cust_addr').setValue(customer.cust_addr)
+          this.updateCustomerForm.get('cust_age').setValue(customer.cust_age)
+
+
+        }
+
 
         resetForm(){
           this.show=false;
@@ -156,6 +189,55 @@ export class UpdatecustomerComponent implements OnInit {
           this.check=true;
           this.reset=false
         }
+
+
+        updateCustomer(){
+          this.loading=true;
+          if(this.check_if_is_integer(this.updateCustomerForm.value['new_cust_age'])
+            &&this.updateCustomerForm.value['new_cust_addr'].trim()!=""
+             &&this.updateCustomerForm.value['new_cust_name'].trim()!=""){
+          this.customerService.updatecustomer(
+            this.customer.ssn,
+            this.updateCustomerForm.value['new_cust_name'],
+            this.updateCustomerForm.value['new_cust_addr'],
+            this.updateCustomerForm.value['new_cust_age']
+          ).subscribe(data=>{
+            console.log(data)
+            this.loading=false;
+            if(data['status']){
+                this.resetForm();
+                this.alertService.success(data['message'])
+            }else{
+              this.alertService.error(data['message'])
+
+            }
+          },
+            error=>{
+              this.loading=false;
+              console.log(error)
+              this.alertService.error(error['message'])
+
+            })
+        }else{
+          alert("Enter All Fields")
+          this.loading=false;
+          this.loadingSSN=false;
+
+        }
+        }
+
+
+        check_if_is_integer(value){
+       if((parseFloat(value) == parseInt(value)) && !isNaN(value)){
+          // I can have spacespacespace1 - which is 1 and validators pases but
+          // spacespacespace doesn't - which is what i wanted.
+          // 1space2 doesn't pass - good
+          // of course, when saving data you do another parseInt.
+           return true;
+       } else {
+           return false;
+       }
+          }
 
 
 

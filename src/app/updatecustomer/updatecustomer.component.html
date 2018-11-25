@@ -1,14 +1,23 @@
 <div class="container col-md-6 col-md-offset-3">
     <h2>Update Customer</h2>
       <div class="row">
-        <form class="col-sm-10"name="form" novalidate [formGroup]="updateCustomerForm" (ngSubmit)="onSubmit()">
+      <form class="col-sm-10" name="form" novalidate [formGroup]="updateCustomerForm" (ngSubmit)="onSubmit()">
         <div class="form-row" [ngClass]="{'form-row has-error' : true }">
             <label class="col-sm-4 col-form-label" for="ssn">Customer SSN ID</label>
             <div class="col-sm-8">
-            <input type="text" class="form-control" formControlName="ssn" [maxlength]="9" />
-            <span class="help-block" style="color:red" *ngIf="updateCustomerForm.get('ssn').hasError('required') && (updateCustomerForm.get('ssn').touched || updateCustomerForm.get('ssn').dirty) "> SSN is required </span>
-           	<span class="help-block" style="color:red" *ngIf="(updateCustomerForm.get('ssn').hasError('minlength')|| updateCustomerForm.get('ssn').hasError('maxlength')) && (updateCustomerForm.get('ssn').touched)"> Length of ssn should be 9 </span>
-            <span class="help-block" style="color:red" *ngIf="(updateCustomerForm.get('ssn').hasError('pattern') && !updateCustomerForm.get('ssn').hasError('minlength') && !updateCustomerForm.get('ssn').hasError('maxlength')) && (updateCustomerForm.get('ssn').touched)"> Enter valid SSN </span>
+            <input type="text" class="form-control" formControlName="ssn" [maxlength]="9"/>
+            <p *ngIf="updateCustomerForm.controls['ssn'].hasError('required')&&!updateCustomerForm.controls['ssn'].pristine" >
+             SSN ID is required
+            </p>
+            <p *ngIf="updateCustomerForm.controls['ssn'].hasError('minlength')&&!updateCustomerForm.controls['ssn'].pristine" >
+              SSN should be  9 digits
+            </p>
+            <p *ngIf="updateCustomerForm.controls['ssn'].hasError('maxlength')&&!updateCustomerForm.controls['ssn'].pristine" >
+              SSN should be  9 digits
+            </p>
+            <p *ngIf="updateCustomerForm.controls['ssn'].hasError('pattern')&&updateCustomerForm.controls['ssn'].dirty" >
+              SSN should only be digits
+            </p>
             <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
 
             </div>
@@ -20,34 +29,34 @@
         <div class="form-row" >
             <label class="col-sm-4 col-form-label" for="cust_name">Customer Name</label>
              <div class="col-sm-8">
-            <input type="text" class="form-control" [disabled]="disable" formControlName="cust_name" [value]="cust_name"  readonly />
+            <input type="text" class="form-control" formControlName="cust_name"  readonly />
             <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('cust_name').hasError('required') && (updateCustomerForm.get('cust_name').touched || updateCustomerForm.get('cust_name').dirty) ">Customer name is required</span>
             <span class="help-block" style="color:red" *ngIf="(updateCustomerForm.get('ssn').hasError('pattern')) && (updateCustomerForm.get('ssn').touched)"> Enter valid customer name </span>
              </div>
         </div>
          <br>
-
-        <div class="form-row">
-            <label class="col-sm-4 col-form-label" for="old_cust_name">Old Customer Name</label>
-             <div class="col-sm-8">
-            <input type="text" class="form-control"[disabled]="disable" formControlName="old_cust_name" />
-            <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('old_cust_name').hasError('required') && (updateCustomerForm.get('old_cust_name').touched || updateCustomerForm.get('old_cust_name').dirty) ">Customer Name is required</span>
-             </div>
-        </div>
-        <br>
          <div class="form-row">
             <label class="col-sm-4 col-form-label" for="new_cust_name">New Customer Name</label>
              <div class="col-sm-8">
             <input type="text" class="form-control" formControlName="new_cust_name" />
+            <p *ngIf="updateCustomerForm.controls['new_cust_name'].hasError('pattern')&&updateCustomerForm.controls['new_cust_name'].dirty" >
+              Customer Name should only be alphabets
+            </p>
+            <p *ngIf="updateCustomerForm.controls['new_cust_name'].hasError('minlength')&&!updateCustomerForm.controls['new_cust_name'].pristine" >
+              Name should contain min 5 characters
+            </p>
+            <p *ngIf="updateCustomerForm.controls['new_cust_name'].hasError('maxlength')&&!updateCustomerForm.controls['new_cust_name'].pristine" >
+              Name should contain max 50 characters
+            </p>
            <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('new_cust_name').hasError('required') && (updateCustomerForm.get('new_cust_name').touched || updateCustomerForm.get('new_cust_name').dirty) ">Customer Name is required</span>
              </div>
         </div>
         <br>
           <div class="form-row">
-            <label class="col-sm-4 col-form-label" for="old_cust_addr">Old Address</label>
+            <label class="col-sm-4 col-form-label" for="cust_addr" >Old Address</label>
              <div class="col-sm-8">
-            <input type="text" class="form-control" [disabled]="disable" formControlName="old_cust_addr"  />
-            <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('old_cust_addr').hasError('required') && (updateCustomerForm.get('old_cust_addr').touched || updateCustomerForm.get('old_cust_addr').dirty) ">Address is required</span>
+            <input type="text" class="form-control" readonly formControlName="cust_addr" />
+            <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('cust_addr').hasError('required') && (updateCustomerForm.get('cust_addr').touched || updateCustomerForm.get('cust_addr').dirty) ">Address is required</span>
              </div>
         </div>
          <br>
@@ -60,10 +69,10 @@
         </div>
          <br>
           <div class="form-row" >
-            <label class="col-sm-4 col-form-label"  for="old_cust_age">Old Age</label>
+            <label class="col-sm-4 col-form-label"  for="cust_age"  >Old Age</label>
              <div class="col-sm-8">
-            <input type="text" class="form-control" [disabled]="disable" formControlName="old_cust_age"  />
-           <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('old_cust_age').hasError('required') && (updateCustomerForm.get('old_cust_age').touched || updateCustomerForm.get('old_cust_age').dirty) ">Old is required</span>
+            <input type="text" class="form-control" readonly formControlName="cust_age"  />
+           <span  class="help-block" style="color:red" *ngIf="updateCustomerForm.get('cust_age').hasError('required') && (updateCustomerForm.get('cust_age').touched || updateCustomerForm.get('cust_age').dirty) ">Old is required</span>
              </div>
         </div>
          <br>
@@ -76,7 +85,7 @@
         </div>
         <br>
         <div class="form-group" align="center">
-            <button [disabled]="loading || (!updateCustomerForm.valid)" class="btn btn-primary col-sm-4">Update</button>
+            <button [disabled]="loading" class="btn btn-primary col-sm-4" (click)="updateCustomer()">Update</button>
             <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
         </div>
         </div>
